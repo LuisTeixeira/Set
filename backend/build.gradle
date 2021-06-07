@@ -1,0 +1,51 @@
+apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'application'
+
+dependencies {
+    expectedBy project(':common')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'io.javalin:javalin:3.5.0'
+    compile "com.fasterxml.jackson.core:jackson-databind:2.10.0.pr1"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    testCompile "junit:junit:4.12"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+
+    compile "org.jetbrains.kotlinx:kotlinx-io-jvm:$kotlinx_io_version"
+}
+
+tasks.withType(compileKotlin.getClass()) {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+application {
+    mainClassName = 'AppKt'
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "AppKt"
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+//task copyClient(type: Copy) {
+//    from project(':js').file('web')
+//    into file('out/web')
+//}
+
+//jar.dependsOn(copyClient)
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources", "out"
+        }
+    }
+}
