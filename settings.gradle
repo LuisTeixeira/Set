@@ -1,4 +1,5 @@
 rootProject.name = 'Set'
 include 'common'
 include 'backend'
+include 'js'
 

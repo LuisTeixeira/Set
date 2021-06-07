@@ -2,6 +2,7 @@ package com.lfmteixeira.models
 
 import kotlinx.io.core.BytePacketBuilder
 import kotlinx.io.core.ByteReadPacket
+import kotlinx.io.core.readBytes
 
 enum class Form {
     OVAL,
@@ -55,4 +56,29 @@ data class Card(
         builder.writeInt(filling.ordinal)
         builder.writeInt(color.ordinal)
     }
+
+    fun toByteArray(): ByteArray {
+        val builder = BytePacketBuilder()
+        buildBytes(builder)
+        return builder.build().readBytes()
+    }
+
+    override fun toString(): String {
+        return "$number, $form, $color, $filling"
+    }
+}
+
+fun toByteArray(cards: List<Card>): ByteArray {
+    val builder = BytePacketBuilder()
+    cards.forEach { it.buildBytes(builder) }
+    return builder.build().readBytes()
+}
+
+fun toCards(byteArray: ByteArray): List<Card> {
+    val cards = ArrayList<Card>()
+    val reader = ByteReadPacket(byteArray)
+    while (reader.canRead()) {
+        cards.add(Card(reader))
+    }
+    return cards
 }

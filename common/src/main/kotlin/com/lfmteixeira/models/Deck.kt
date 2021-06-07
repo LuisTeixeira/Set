@@ -7,13 +7,13 @@ class Deck {
         cards = buildDeck()
     }
 
-    fun getFirstTwelveCards(): List<Card> {
-        val firstTwelve = cards.subList(0, 11)
+    fun getFirstTwelveCards(): MutableList<Card> {
+        val firstTwelve = cards.subList(0, 11).toMutableList()
         cards.removeAll(firstTwelve)
         return firstTwelve
     }
 
-    fun getNextThree(): List<Card> {
+    fun getNextThree(): MutableList<Card> {
         val nextThree = cards.subList(0,2)
         cards.removeAll(nextThree)
         return nextThree

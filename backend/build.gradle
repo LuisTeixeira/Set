@@ -24,23 +24,23 @@ tasks.withType(compileKotlin.getClass()) {
 }
 
 application {
-    mainClassName = 'AppKt'
+    mainClassName = 'com.lfmteixeira.server.AppKt'
 }
 
 jar {
     manifest {
-        attributes "Main-Class": "AppKt"
+        attributes "Main-Class": "com.lfmteixeira.server.AppKt"
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-//task copyClient(type: Copy) {
-//    from project(':js').file('web')
-//    into file('out/web')
-//}
+task copyClient(type: Copy) {
+    from project(':js').file('web')
+    into file('out/web')
+}
 
-//jar.dependsOn(copyClient)
+jar.dependsOn(copyClient)
 
 sourceSets {
     main {
