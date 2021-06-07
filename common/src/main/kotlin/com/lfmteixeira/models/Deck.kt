@@ -1,12 +1,25 @@
 package com.lfmteixeira.models
 
 class Deck {
+    private val cards: MutableList<Card>
 
     init {
-        val cards = buildDeck()
+        cards = buildDeck()
     }
 
-    private fun buildDeck(): List<Card> {
+    fun getFirstTwelveCards(): List<Card> {
+        val firstTwelve = cards.subList(0, 11)
+        cards.removeAll(firstTwelve)
+        return firstTwelve
+    }
+
+    fun getNextThree(): List<Card> {
+        val nextThree = cards.subList(0,2)
+        cards.removeAll(nextThree)
+        return nextThree
+    }
+
+    private fun buildDeck(): MutableList<Card> {
         val deck = mutableListOf<Card>()
         Filling.values().forEach { filling ->
             Form.values().forEach { form ->
@@ -17,6 +30,7 @@ class Deck {
                 }
             }
         }
+        deck.shuffle()
         return deck
     }
 }
